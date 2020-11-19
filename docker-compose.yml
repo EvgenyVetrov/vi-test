@@ -1,6 +1,16 @@
 version: '3.2'
 
 services:
+  api:
+      build: api
+      ports:
+        - 20080:80
+      volumes:
+        # Re-use local composer cache via host-volume
+        - ~/.composer-docker/cache:/root/.composer/cache:delegated
+        # Mount source-code for development
+        - ./:/app
+
 
   frontend:
     build: frontend
@@ -25,10 +35,10 @@ services:
   mysql:
     image: mysql:5.7
     environment:
-      - MYSQL_ROOT_PASSWORD=verysecret
-      - MYSQL_DATABASE=yii2advanced
-      - MYSQL_USER=yii2advanced
-      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=vi-test
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
 
   #pgsql:
   #  image: postgres:9.5
