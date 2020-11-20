@@ -7,6 +7,7 @@ $params = array_merge(
     //require __DIR__ . '/params-local.php'
 );
 
+
 $config = [
     'id'        => 'api',
     'name'      => 'vi-test',
@@ -72,7 +73,7 @@ $config = [
             'enableStrictParsing' => true,
             'showScriptName'      => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', /*'controller' => 'user'*/],
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'default'],
 
             ]
         ],

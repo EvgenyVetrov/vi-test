@@ -11,6 +11,26 @@ services:
         # Mount source-code for development
         - ./:/app
 
+#  nginx:
+#      image: nginx:latest
+#      ports:
+#        - 80:80
+#      volumes:
+#        - ./:/var/www/html
+#        - ./docker/nginx/conf.d:/etc/nginx/conf.d
+#        - ./docker/nginx/logs:/var/log/nginx/
+  nginx:
+      image: nginx:latest
+      ports:
+        - 80:80
+      volumes:
+        - ./:/var/www/html
+        - ./docker/nginx/conf.d:/etc/nginx/conf.d
+        - ./docker/nginx/logs:/var/log/nginx/
+  php:
+      image: php:7.2-fpm
+      volumes:
+        - ./:/var/www/html
 
   frontend:
     build: frontend
