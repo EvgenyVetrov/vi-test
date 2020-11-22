@@ -2,7 +2,6 @@
   <v-container>
     <v-row class="text-left">
 
-      <v-divider></v-divider>
       <v-col
               class="mb-5"
               cols="12"
@@ -20,25 +19,31 @@
             <span>1095р.</span>
             <v-spacer></v-spacer>
             <v-btn
-                    color="green lighten-2"
+                    color="red lighten-2"
                     text
             >
-              в корзину
+              убрать
             </v-btn>
 
           </v-card-actions>
         </v-card>
-
-
-
       </v-col>
     </v-row>
+    <v-divider></v-divider>
+    <v-row class="text-right">
+      <v-col>
+        <p>Итого: 1095 р.</p><v-btn>Заказать</v-btn>
+      </v-col>
+
+
+    </v-row>
+
   </v-container>
 </template>
 
 <script>
   export default {
-    name: 'Catalog',
+    name: 'Basket',
 
     data: () => ({
       ecosystem: [
