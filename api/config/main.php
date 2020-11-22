@@ -28,12 +28,17 @@ $config = [
             'class' => \yii\base\Security::class,
             'passwordHashCost' => 10,
         ],
-        'user' => [
+        /*'user' => [
             'enableAutoLogin' => true,
             'identityClass'   => '\app\modules\users\models\User',
             'class'           => '\app\components\User',
             'enableSession'   => true,
             'loginUrl'        => null
+        ],*/
+        'user' => [
+            'identityClass' => 'common\models\User',
+            'enableAutoLogin' => true,
+            'identityCookie' => ['name' => '_identity-api', 'httpOnly' => true],
         ],
         'request' => [
             'enableCookieValidation' => false,
@@ -73,8 +78,9 @@ $config = [
             'enableStrictParsing' => true,
             'showScriptName'      => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'default'],
-
+                //['class' => 'yii\rest\UrlRule', 'controller' => 'default'],
+                '<module:[\w\.-]+>/<controller:[\w-]+>/<action:[\w-]+>' => '<module>/<controller>/<action>',
+                '<module:[\w\.-]+>/<controller:[\w-]+>/<action:[\w-]+>/<id:\w+>' => '<module>/<controller>/<action>',
             ]
         ],
 
