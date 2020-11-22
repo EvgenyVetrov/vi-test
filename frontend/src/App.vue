@@ -36,9 +36,5 @@ export default {
   components: {
     //HelloWorld,
   },
-
-  data: () => ({
-    //
-  }),
 };
 </script>

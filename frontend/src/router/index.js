@@ -4,6 +4,9 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
+/*const api_domain = process.env.NODE_ENV === 'production'
+    ? 'https://api.vi-test.evetrov.ru' : 'http://api.vi-test.loc';*/
+
 const routes = [
   {
     path: '/',

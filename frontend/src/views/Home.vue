@@ -43,9 +43,21 @@
 
 export default {
   name: 'Home',
+  /*data() => {
+    'fullResp'
+  },*/
   components: {
     //  StoreCarcass,
     //HelloWorld
+  },
+  mounted() {
+      //alert(process.env.VUE_APP_APIDOMAIN);
+      //alert(process.env.VUE_APP_TEST);
+
+      //var api_domain = "http://api.vi-test.loc/v1";
+      this.$axios
+          .get('/default/site-data')
+          .then(response => (this.info = response.data.bpi));
   }
 }
 </script>
