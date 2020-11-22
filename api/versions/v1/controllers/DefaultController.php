@@ -14,14 +14,15 @@ class DefaultController extends Controller
     protected function verbs()
     {
         return [
-            'home' => ['get'],
+            'pay'       => ['get'],
+            'home'        => ['get'],
+            'order'         => ['post'],
+            'site-data'       => ['get'],
             'generate-products' => ['get'],
-            'pay' => ['get'],
-            'site-data' => ['get'],
-            'order' => ['post'],
-            //'active-subscriptions' => ['get'],
         ];
     }
+
+
 
     /**
      * Тестовый экшн. Проверить, что все работает.
@@ -96,7 +97,7 @@ class DefaultController extends Controller
 
         if (!OrdersService::checkSumm($order, $summ)) {
             return [
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => 'Сумма оплаты ('.$summ.'р.) не совпадает со стоимостью товаров ('.$order->summ.'р.). Возможно стоимость товаров изменилась.'
             ];
         }
@@ -105,26 +106,26 @@ class DefaultController extends Controller
 
         if ($result['status'] == 'paid' AND $result['save_order']) {
             return [
-                'status' => 'success',
+                'status'  => 'success',
                 'message' => 'Оплата прошла успешно. Заказ оплачен'
             ];
         }
         if ($result['status'] == 'paid' AND !$result['save_order']) {
             return [
-                'status' => 'warning',
+                'status'  => 'warning',
                 'message' => 'Оплата прошла успешно, но заказ не удалось изменить в системе'
             ];
         }
 
         if ($result['status'] == 'not_paid') {
             return [
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => 'Не удалось оплатить'
             ];
         }
 
         return [
-            'status' => 'error',
+            'status'  => 'error',
             'message' => 'Оп! Случилась непредвиденная ошибка при оплате'
         ];
 
@@ -137,10 +138,9 @@ class DefaultController extends Controller
         $orders = new OrdersRepository();
         $models = Orders::find()->joinWith('orderedProducts')->limit(1000)->all(); // должен же быть какой-то предохранитель
         $orders->multiSet($models);
-        $preparedOrders = OrdersService::prepareOrdersList($orders->getAll());
 
-        $productsModels = Products::find()->limit(1000)->all();
-
+        $preparedOrders   = OrdersService::prepareOrdersList($orders->getAll());
+        $productsModels   = Products::find()->limit(1000)->all();
         $preparedProducts = ProductsService::prepareListProducts($productsModels);
 
         return [
