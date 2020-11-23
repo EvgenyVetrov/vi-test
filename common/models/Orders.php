@@ -10,8 +10,6 @@ use yii\helpers\ArrayHelper;
  * Таблица для внесения корректирующих записей для указания таймзон станций, в которых таймзона не приходит от немо.
  *
  * @property int $id
- * @property int $status
- * @property string $contacts
  * @property int $updated_at
  * @property int $created_at
  */
@@ -42,8 +40,6 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'status', 'updated_at', 'created_at'], 'integer'],
-            [['contacts'], 'required'], // без контактов нет смысла в заказе
-            [['contacts'], 'string', 'min' => 5, 'max' => 100],
         ];
     }
 
@@ -53,7 +49,6 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'contacts'   => 'контакты',
             'status'     => 'статус',
             'updated_at' => 'обновлено',
             'created_at' => 'создано'
@@ -84,8 +79,8 @@ class Orders extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[Orders::SCENARIO_CREATE] = ['contacts'];
-        $scenarios[Orders::SCENARIO_PAY]    = ['contacts'];
+        $scenarios[Orders::SCENARIO_CREATE] = ['status'];
+        $scenarios[Orders::SCENARIO_PAY]    = ['status'];
         return $scenarios;
     }
 

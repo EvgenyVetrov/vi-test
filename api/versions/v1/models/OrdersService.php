@@ -20,17 +20,19 @@ class OrdersService
     /**
      * Первичное создание заказа
      *
-     * @param string $contacts
      * @param array $products_ids
      * @return array
      */
-    public static function createOrder(string $contacts, array $products_ids)
+    public static function createOrder(array $products_ids)
     {
         if (!count($products_ids)) {
-            return ['status' => 'error', 'code' => 'no_products'];
+            return [
+                'status'  => 'error',
+                'message' => 'Нет товаров в заказе',
+                'code'    => 'no_products'
+            ];
         }
         $orderModel = new Orders([
-            'contacts'         => $contacts,
             'scenario'         => Orders::SCENARIO_CREATE,
             'productsForOrder' => $products_ids
         ]);
@@ -38,13 +40,15 @@ class OrdersService
         if ($orderModel->save()) {
             return [
                 'status'           => count($orderModel->warnings) ? 'warning' : 'success',
+                'message'          => 'Заказ успешно дбавлен под номером: '. $orderModel->id,
                 'warnings_list'    => $orderModel->warnings,
                 'ordered_products' => $orderModel->productsForOrder,
                 'order_id'         => $orderModel->id,
             ];
         } else {
             return [
-                'status'    => 'error',
+                'status'   => 'error',
+                'message'   => 'Ошибка во время сохранения заказа',
                 'code'       => 'while_save_order',
                 'errors_list' => $orderModel->getErrors()
             ];
@@ -64,6 +68,7 @@ class OrdersService
     {
         return ($order->summ == $summ);
     }
+
 
 
     /**

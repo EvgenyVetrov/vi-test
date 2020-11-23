@@ -30,13 +30,10 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    <RequestResult :key="1" :serverResponce="this.generatorResult" :message="this.resultMessage" :openDialog="generatorResult ? true : false"></RequestResult>
-  </v-container>
+    </v-container>
 </template>
 
 <script>
-  import RequestResult  from "@/components/RequestResult";
-
   export default {
     name: 'GenerateBtn',
     data () {
@@ -47,9 +44,6 @@
             resultMessage: null,
             generateNumber:  5, // сколько генерить за раз
         }
-    },
-    components: {
-        RequestResult
     },
     methods: {
       startGenerate: function () {
@@ -62,8 +56,13 @@
                   this.generatorResult = response.data;
                   this.productsCounter = response.data.counter;
                   this.dialog = false;
-                  this.resultMessage = 'Сгенерировано товаров: 5'
+                  this.resultMessage = 'Сгенерировано товаров: ' + this.productsCounter;
 
+                  this.$root.$children[0].notify({
+                      serverResponce: this.generatorResult,
+                      resultMessage: this.resultMessage,
+                      openDialog: true,
+                  });
                   // рассылаем событие обновления данных сайта
                   this.$emit('update-site-data', true);
               })

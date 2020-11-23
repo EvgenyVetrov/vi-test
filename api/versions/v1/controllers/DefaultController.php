@@ -16,7 +16,7 @@ class DefaultController extends Controller
         return [
             'pay'       => ['get'],
             'home'        => ['get'],
-            'order'         => ['post'],
+            'order'         => ['post', 'get'], // get - костыль для CORS ошибки
             'site-data'       => ['get'],
             'generate-products' => ['get'],
         ];
@@ -69,8 +69,12 @@ class DefaultController extends Controller
      */
     public function actionOrder()
     {
-        $post = \Yii::$app->request->post();
-        if (!isset($post['contacts']) OR !isset($post['products'])) {
+        $this->enableCsrfValidation = false;
+        //$post = \Yii::$app->request->post();
+        //print_r(\Yii::$app->request);
+        //exit();
+        $post = \Yii::$app->request->get();
+        if (!isset($post['products'])) {
             return [
                 'status' => 'error',
                 'message' => 'Недостаточно данных для заказа'

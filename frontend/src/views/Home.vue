@@ -29,7 +29,7 @@
         <Catalog :products="siteData.products_list" @add-to-cart="addToCart" />
       </v-col>
       <v-col cols="12" md="4" sm="6" style="background-color: rgba(162,92,118,0.31)"><h3>корзина</h3>
-        <Basket :products="basketList" @remove-product="removeFromCart" />
+        <Basket :products="basketList" @remove-product="removeFromCart" @update-site-data="getSiteData"  @clear-basket="clearBasket" />
       </v-col>
       <v-col cols="12" md="4" sm="6" style="background-color: rgba(118,128,182,0.31)"><h3>заказы</h3>
         <Orders :orders="siteData.orders_list" />
@@ -50,7 +50,7 @@ export default {
   name: 'Home',
   data() {
     return {
-      siteData: null,
+      siteData: [{products_list: []}, {orders_list: []}],
       basketList: []
     }
   },
@@ -70,6 +70,7 @@ export default {
           .then(response => (this.siteData = response.data));
     },
     addToCart(product) {
+      // функция поиска по массиву объектов
       let getObjectByPropertyValue = function(array, propertyName, propertyValue) {
         return array.find((o) => { return o[propertyName] === propertyValue })
       }
@@ -82,10 +83,14 @@ export default {
     },
     removeFromCart(id)
     {
+        // удаляем объект с нужным ID из массива объектов
         let index = this.basketList.findIndex(n => n.id === id);
         if (index !== -1) {
             this.basketList.splice(index, 1);
         }
+    },
+    clearBasket() {
+      this.basketList = [];
     }
   }
 }

@@ -24,17 +24,33 @@
     <v-main>
       <router-view/>
     </v-main>
+    <RequestResult :key="1" :serverResponce="this.notifyData.serverResponce" :message="this.notifyData.resultMessage" :openDialog="this.notifyData.openDialog"></RequestResult>
   </v-app>
 </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld';
+import RequestResult  from "@/components/RequestResult";
+
 
 export default {
   name: 'App',
-
-  components: {
-    //HelloWorld,
+  data () {
+      return {
+          notifyData: {
+              serverResponce: null,
+              resultMessage: null,
+              openDialog: false,
+          }
+      }
   },
+  components: {
+    RequestResult,
+  },
+  methods: {
+      notify(data) {
+          this.notifyData = data;
+      }
+  }
 };
 </script>

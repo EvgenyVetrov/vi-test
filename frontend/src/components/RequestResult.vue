@@ -48,11 +48,9 @@
 
             this.timerId = setTimeout(() => (this.dialog = false), 8000)
         },
-        serverResponce(val) {
-            console.warn(val);
+        serverResponce() {
             this.dialog = this.openDialog ? true : false;
             this.showedMessage = this.message ? this.message : this.serverResponce.message;
-
 
             if (!this.type && this.serverResponce && !this.serverResponce.status) { this.title = 'Внимание!'; }
             if (this.type == "success" || this.serverResponce && this.serverResponce.status == "success") { this.title = 'Успешно завершено!'; }
