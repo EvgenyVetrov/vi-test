@@ -14,9 +14,9 @@ class DefaultController extends Controller
     protected function verbs()
     {
         return [
-            'pay'       => ['get'],
+            'pay'       => ['put', 'post'],
             'home'        => ['get'],
-            'order'         => ['post', 'get'], // get - костыль для CORS ошибки
+            'order'         => ['post'],
             'site-data'       => ['get'],
             'generate-products' => ['get'],
         ];
@@ -69,11 +69,10 @@ class DefaultController extends Controller
      */
     public function actionOrder()
     {
+        //header('Access-Control-Allow-Origin: *');
         $this->enableCsrfValidation = false;
-        //$post = \Yii::$app->request->post();
-        //print_r(\Yii::$app->request);
-        //exit();
-        $post = \Yii::$app->request->get();
+
+        $post = \Yii::$app->request->post();
         if (!isset($post['products'])) {
             return [
                 'status' => 'error',
@@ -81,7 +80,7 @@ class DefaultController extends Controller
             ];
         }
 
-        $result = OrdersService::createOrder($post['contacts'], (array) $post['products']);
+        $result = OrdersService::createOrder((array) $post['products']);
         return $result;
     }
 
@@ -94,10 +93,21 @@ class DefaultController extends Controller
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\web\NotFoundHttpException
      */
-    public function actionPay($order_id, $summ)
+    public function actionPay()
     {
+
+        $order_id = \Yii::$app->request->post('order_id');
+        $summ     = \Yii::$app->request->post('summ');
+
         $orders = new OrdersRepository();
         $order = $orders->findModel($order_id);
+
+        if ($order->status == Orders::STATUS_PAID) {
+            return [
+                'status'  => 'error',
+                'message' => 'Заказ #'.$order->id.' уже оплачен.'
+            ];
+        }
 
         if (!OrdersService::checkSumm($order, $summ)) {
             return [
@@ -111,20 +121,20 @@ class DefaultController extends Controller
         if ($result['status'] == 'paid' AND $result['save_order']) {
             return [
                 'status'  => 'success',
-                'message' => 'Оплата прошла успешно. Заказ оплачен'
+                'message' => 'Оплата прошла успешно. Заказ #'.$order->id.' оплачен'
             ];
         }
         if ($result['status'] == 'paid' AND !$result['save_order']) {
             return [
                 'status'  => 'warning',
-                'message' => 'Оплата прошла успешно, но заказ не удалось изменить в системе'
+                'message' => 'Оплата прошла успешно, но заказ #'.$order->id.' не удалось изменить в системе'
             ];
         }
 
         if ($result['status'] == 'not_paid') {
             return [
                 'status'  => 'error',
-                'message' => 'Не удалось оплатить'
+                'message' => 'Не удалось оплатить заказ #'.$order->id
             ];
         }
 

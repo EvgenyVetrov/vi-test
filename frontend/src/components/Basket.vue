@@ -5,14 +5,18 @@
       <BasketProduct v-for="product in products" :product="product" :key="product.id" @remove-product="removeProduct" ></BasketProduct>
       </v-col>
     </v-row>
-    <v-divider></v-divider>
-    <v-row class="text-right">
-      <v-col>
-        <p>Итого: {{summ}} р.</p><v-btn @click="order">Заказать</v-btn>
-      </v-col>
+    <p class="pt-7 grey--text pr-10 pl-10 text-center" v-if="!this.products.length">корзина пуста</p>
+    <v-container v-if="this.products.length">
+      <v-divider></v-divider>
+      <v-row class="text-right">
+        <v-col>
+          <p>Итого: {{summ}} р.</p><v-btn @click="order">Заказать</v-btn>
+        </v-col>
 
 
-    </v-row>
+      </v-row>
+    </v-container>
+
   </v-container>
 </template>
 
@@ -54,8 +58,8 @@
         });
 
 
-        qs.stringify({ 'products': orderedProductsIds });
-        this.$axios.get('/default/order', { 'products': orderedProductsIds }, {method:'GET'})
+        //qs.stringify({ 'products': orderedProductsIds });
+        this.$axios.post('/default/order', qs.stringify({ 'products': orderedProductsIds }))
           .then(response => {
               this.orderResult = response.data;
               this.$root.$children[0].notify({
@@ -69,6 +73,11 @@
           })
           .catch(error => {
               this.orderResult = error;
+              this.$root.$children[0].notify({
+                  serverResponce: this.orderResult,
+                  resultMessage: 'Не удалось выполнить запрос',
+                  openDialog: true,
+              })
           });
       }
     },

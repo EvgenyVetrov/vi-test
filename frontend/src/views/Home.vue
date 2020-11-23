@@ -28,11 +28,11 @@
       <v-col cols="12" md="4" sm="6" style="background-color: rgba(207,71,78,0.3)"><h3>каталог</h3>
         <Catalog :products="siteData.products_list" @add-to-cart="addToCart" />
       </v-col>
-      <v-col cols="12" md="4" sm="6" style="background-color: rgba(162,92,118,0.31)"><h3>корзина</h3>
+      <v-col cols="12" md="4" sm="6" style="background-color: rgba(162,95,138,0.31)"><h3>корзина</h3>
         <Basket :products="basketList" @remove-product="removeFromCart" @update-site-data="getSiteData"  @clear-basket="clearBasket" />
       </v-col>
       <v-col cols="12" md="4" sm="6" style="background-color: rgba(118,128,182,0.31)"><h3>заказы</h3>
-        <Orders :orders="siteData.orders_list" />
+        <Orders :orders="siteData.orders_list" @update-site-data="getSiteData" />
       </v-col>
     </v-row>
   </v-container>
@@ -76,7 +76,11 @@ export default {
       }
 
       if (getObjectByPropertyValue(this.basketList, "id", product.id)) {
-          alert('товар уже в корзине');
+          this.$root.$children[0].notify({
+              serverResponce: {type: 'warning'},
+              resultMessage: 'Товар уже в корзине. Второй раз добавить нельзя',
+              openDialog: true,
+          });
       } else {
           this.basketList.push(product);
       }

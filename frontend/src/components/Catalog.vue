@@ -2,9 +2,9 @@
   <v-container>
     <v-row class="text-left">
 
-      <v-divider></v-divider>
       <v-col cols="12">
         <CatalogProduct v-for="product in products" :product="product" :key="product.id" @add-to-cart='addToCart'></CatalogProduct>
+        <p class="pt-7 grey--text pr-10 pl-10 text-center" v-if="this.products && !this.products.length">к сожалению товаров в каталоге нет</p>
       </v-col>
     </v-row>
   </v-container>

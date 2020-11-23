@@ -32,6 +32,7 @@
       <v-btn v-if="order.status == 0"
               color="primary"
               text
+             @click="pay"
       >
         оплатить
       </v-btn>
@@ -41,8 +42,39 @@
 </template>
 
 <script>
+  import qs from 'qs';
+
   export default {
     name: 'OneOrder',
     props: ['order'],
+    data () {
+        return {
+            payResult: null,
+        }
+    },
+    methods: {
+        pay() {
+            this.$axios
+                .post('/default/pay', qs.stringify({order_id: this.order.id, summ: this.order.summ}))
+                .then(response => {
+                    this.payResult = response.data;
+
+                    this.$root.$children[0].notify({
+                        serverResponce: this.payResult,
+                        openDialog: true,
+                    });
+                    // рассылаем событие обновления данных сайта
+                    this.$emit('update-site-data', true);
+                })
+                .catch(error => {
+                    this.payResult = error;
+                    this.$root.$children[0].notify({
+                        serverResponce: this.payResult,
+                        resultMessage: 'Не удалось выполнить запрос',
+                        openDialog: true,
+                    });
+                });
+        }
+    }
   }
 </script>
