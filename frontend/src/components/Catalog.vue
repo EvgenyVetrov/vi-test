@@ -3,58 +3,26 @@
     <v-row class="text-left">
 
       <v-divider></v-divider>
-      <v-col
-              class="mb-5"
-              cols="12"
-
-      >
-        <v-card
-                elevation="2"
-                outlined
-                tile
-        >
-          <v-card-subtitle>
-            <span>Шуруповерт Огонь аппарат 2000</span> <v-spacer></v-spacer> id: 1234
-          </v-card-subtitle>
-          <v-card-actions>
-            <span>1095р.</span>
-            <v-spacer></v-spacer>
-            <v-btn
-                    color="green lighten-2"
-                    text
-            >
-              в корзину
-            </v-btn>
-
-          </v-card-actions>
-        </v-card>
-
-
-
+      <v-col cols="12">
+        <CatalogProduct v-for="product in products" :product="product" :key="product.id" @add-to-cart='addToCart'></CatalogProduct>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+  import CatalogProduct from "@/components/CatalogProduct";
+
   export default {
     name: 'Catalog',
-
-    data: () => ({
-      ecosystem: [
-        {
-          text: 'vuetify-loader',
-          href: 'https://github.com/vuetifyjs/vuetify-loader',
-        },
-        {
-          text: 'github',
-          href: 'https://github.com/vuetifyjs/vuetify',
-        },
-        {
-          text: 'awesome-vuetify',
-          href: 'https://github.com/vuetifyjs/awesome-vuetify',
-        },
-      ],
-    }),
+    props: ['products'], // тут принимаем массив со списком продуктов для каталога
+    components: {
+        CatalogProduct
+    },
+    methods: {
+        addToCart(product) {
+            this.$emit('add-to-cart', product);
+        }
+    }
   }
 </script>

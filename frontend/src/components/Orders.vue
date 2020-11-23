@@ -5,40 +5,8 @@
             cols="12"
 
     >
-      <v-card
-              elevation="2"
-              outlined
-              tile
-      >
-        <v-card-subtitle class="pb-0 text-center">
-          <span>Заказ 1234 </span><span>(новый)</span>
-        </v-card-subtitle>
-        <v-card-text>
-          <v-list-item  class="pt-0 pb-0">
-            <v-list-item-content>
-              <v-list-item-title>Шуруповерт макита макси 455</v-list-item-title>
-              <v-list-item-subtitle>5000р. <span class="pl-5">id: 12345</span> </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="pt-0 pb-0">
-            <v-list-item-content>
-              <v-list-item-title>Бензопила лютик дизельная</v-list-item-title>
-              <v-list-item-subtitle>3508р. <span class="pl-5">id: 45</span> </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-card-text>
-        <v-card-actions>
-          <span>1095р.</span>
-          <v-spacer></v-spacer>
-          <v-btn
-                  color="primary"
-                  text
-          >
-            оплатить
-          </v-btn>
+      <OneOrder v-for="order in orders" :key="order.id" :order="order"></OneOrder>
 
-        </v-card-actions>
-      </v-card>
 
 
     </v-col>
@@ -46,8 +14,14 @@
 </template>
 
 <script>
+    import OneOrder from "@/components/OneOrder";
+
   export default {
     name: 'Orders',
+    props: ['orders'],
+    components: {
+        OneOrder
+    },
 
     data: () => ({
       ecosystem: [
