@@ -57,8 +57,6 @@
             orderedProductsIds.push(item.id);
         });
 
-
-        //qs.stringify({ 'products': orderedProductsIds });
         this.$axios.post('/default/order', qs.stringify({ 'products': orderedProductsIds }))
           .then(response => {
               this.orderResult = response.data;

@@ -26,13 +26,6 @@ $config = [
             'class' => \yii\base\Security::class,
             'passwordHashCost' => 10,
         ],
-        /*'user' => [
-            'enableAutoLogin' => true,
-            'identityClass'   => '\app\modules\users\models\User',
-            'class'           => '\app\components\User',
-            'enableSession'   => true,
-            'loginUrl'        => null
-        ],*/
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,

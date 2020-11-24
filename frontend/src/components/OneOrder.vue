@@ -19,12 +19,6 @@
       <p v-if="!this.order.products.length" class="red--text darken-4">
         Товаров в заказе нет. Вероятно они больше не существуют.
       </p>
-      <!--<v-list-item class="pt-0 pb-0">
-        <v-list-item-content>
-          <v-list-item-title>Бензопила лютик дизельная</v-list-item-title>
-          <v-list-item-subtitle>3508р. <span class="pl-5">id: 45</span> </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>-->
     </v-card-text>
     <v-card-actions  class="pt-0" v-if="this.order.summ !== null">
       <span class="pl-2">Итого: {{order.summ}}р.</span>

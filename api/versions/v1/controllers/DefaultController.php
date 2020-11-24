@@ -69,7 +69,6 @@ class DefaultController extends Controller
      */
     public function actionOrder()
     {
-        //header('Access-Control-Allow-Origin: *');
         $this->enableCsrfValidation = false;
 
         $post = \Yii::$app->request->post();
@@ -98,6 +97,13 @@ class DefaultController extends Controller
 
         $order_id = \Yii::$app->request->post('order_id');
         $summ     = \Yii::$app->request->post('summ');
+
+        if (!$order_id OR !$summ) {
+            return [
+                'status'  => 'error',
+                'message' => 'недостаточно данных для оплаты'
+            ];
+        }
 
         $orders = new OrdersRepository();
         $order = $orders->findModel($order_id);
@@ -138,10 +144,7 @@ class DefaultController extends Controller
             ];
         }
 
-        return [
-            'status'  => 'error',
-            'message' => 'Оп! Случилась непредвиденная ошибка при оплате'
-        ];
+        return ['status' => 'error', 'message' => 'Оп! Случилась непредвиденная ошибка при оплате'];
 
     }
 
