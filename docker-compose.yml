@@ -27,6 +27,11 @@ services:
         - ./:/var/www/html
         - ./docker/nginx/conf.d:/etc/nginx/conf.d
         - ./docker/nginx/logs:/var/log/nginx/
+      networks:
+          bridge6:
+            aliases:
+              - api.vi-test.loc
+
   php:
       image: php:7.2-fpm
       volumes:
