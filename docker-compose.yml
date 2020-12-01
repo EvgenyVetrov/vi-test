@@ -1,15 +1,25 @@
-version: '3.2'
+version: '2'
+
+networks:
+  default:
+    driver: bridge
 
 services:
-  api:
-      build: api
+  app:
+      build:
+        context: ./
+        dockerfile: ./docker/Dockerfile
       ports:
-        - 20080:80
+        - 80:80
+      networks:
+        - default
+      # Запускаем только после db
+      depends_on:
+        - db
       volumes:
-        # Re-use local composer cache via host-volume
-        - ~/.composer-docker/cache:/root/.composer/cache:delegated
-        # Mount source-code for development
-        - ./:/app
+        - "./:/var/www/app"
+        # Так же линкуем конфиг для nginx
+        #- "./docker/nginx/conf.d:/etc/nginx/sites-available"
 
 #  nginx:
 #      image: nginx:latest
@@ -19,46 +29,41 @@ services:
 #        - ./:/var/www/html
 #        - ./docker/nginx/conf.d:/etc/nginx/conf.d
 #        - ./docker/nginx/logs:/var/log/nginx/
-  nginx:
-      image: nginx:latest
-      ports:
-        - 80:80
-      volumes:
-        - ./:/var/www/html
-        - ./docker/nginx/conf.d:/etc/nginx/conf.d
-        - ./docker/nginx/logs:/var/log/nginx/
-      networks:
-          bridge6:
-            aliases:
-              - api.vi-test.loc
+  #nginx:
+  #    image: nginx:latest
+  #    ports:
+  #      - 80:80
+  #    volumes:
+  #      - ./:/var/www/html
+  #      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+  #      - ./docker/nginx/logs:/var/log/nginx/
+  #    networks:
+  #        default:
+  #          aliases:
+  #            - api.doker-vi-test.loc
 
-  php:
-      image: php:7.2-fpm
-      volumes:
-        - ./:/var/www/html
+  #php:
+  #    image: php:7.2-fpm
+  #    volumes:
+  #      - ./:/var/www/html
 
-  frontend:
-    build: frontend
-    ports:
-      - 20080:80
-    volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      # Mount source-code for development
-      - ./:/app
+  #frontend:
+  #  build: frontend
+  #  ports:
+  #    - 20080:80
+  #  volumes:
+  #    # Re-use local composer cache via host-volume
+  #    - ~/.composer-docker/cache:/root/.composer/cache:delegated
+  #    # Mount source-code for development
+  #    - ./:/app
 
-  backend:
-    build: backend
-    ports:
-      - 21080:80
-    volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      # Mount source-code for development
-      - ./:/app
 
-  mysql:
+  db:
     image: mysql:5.7
+    networks:
+      - default
+    ports:
+      - "3336:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=vi-test
