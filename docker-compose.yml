@@ -18,45 +18,6 @@ services:
         - db
       volumes:
         - "./:/var/www/app"
-        # Так же линкуем конфиг для nginx
-        #- "./docker/nginx/conf.d:/etc/nginx/sites-available"
-
-#  nginx:
-#      image: nginx:latest
-#      ports:
-#        - 80:80
-#      volumes:
-#        - ./:/var/www/html
-#        - ./docker/nginx/conf.d:/etc/nginx/conf.d
-#        - ./docker/nginx/logs:/var/log/nginx/
-  #nginx:
-  #    image: nginx:latest
-  #    ports:
-  #      - 80:80
-  #    volumes:
-  #      - ./:/var/www/html
-  #      - ./docker/nginx/conf.d:/etc/nginx/conf.d
-  #      - ./docker/nginx/logs:/var/log/nginx/
-  #    networks:
-  #        default:
-  #          aliases:
-  #            - api.doker-vi-test.loc
-
-  #php:
-  #    image: php:7.2-fpm
-  #    volumes:
-  #      - ./:/var/www/html
-
-  #frontend:
-  #  build: frontend
-  #  ports:
-  #    - 20080:80
-  #  volumes:
-  #    # Re-use local composer cache via host-volume
-  #    - ~/.composer-docker/cache:/root/.composer/cache:delegated
-  #    # Mount source-code for development
-  #    - ./:/app
-
 
   db:
     image: mysql:5.7
